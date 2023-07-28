@@ -21,7 +21,7 @@ type UserRegister struct {
 	PasswordConfirm string `json:"password_confirm"`
 }
 
-func ValidUserRegister(model *UserRegister) bool {
-	//TODO: add checking is user valid
-	return false
+type UserLogin struct {
+	NickName string `json:"nick_name"`
+	Password string `json:"password"`
 }

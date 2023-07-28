@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/sanokkk/go_auth/internal"
 
 func main() {
-	fmt.Println("Hello world")
+	internal.Serve()
 }
