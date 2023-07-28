@@ -27,7 +27,7 @@ type Claims struct {
 
 func (generator *SH256JWT) generateJWT(secretKey string, login *models.User) (string, error) {
 	byteKey := []byte(secretKey)
-	expirationTime := time.Now().Add(time.Minute * 30)
+	expirationTime := time.Now().Add(time.Minute * 1)
 	claims := &Claims{
 		NickName: login.NickName,
 		Id:       login.ID,

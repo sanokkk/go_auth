@@ -86,3 +86,5 @@ func (apiCfg *ApiConfig) handleLogin(w http.ResponseWriter, r *http.Request) {
 func (apiCfg *ApiConfig) handleWelcome(w http.ResponseWriter, r *http.Request, user repo.User) {
 	respondWithJSON(w, 200, user)
 }
+
+//TODO: ADD REAUTH FUNCTION

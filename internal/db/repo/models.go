@@ -8,6 +8,12 @@ import (
 	"github.com/google/uuid"
 )
 
+type Token struct {
+	ID           int32
+	JwtToken     string
+	RefreshToken string
+}
+
 type User struct {
 	ID           uuid.UUID
 	FullName     string

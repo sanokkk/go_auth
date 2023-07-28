@@ -35,7 +35,7 @@ func (apiCfg *ApiConfig) handleAuth(handler httpHandler) http.HandlerFunc {
 			return []byte(key), nil
 		})
 		log.Println("token valid: ", token.Valid)
-		if err != nil {
+		if err != nil || !token.Valid {
 			respondWithError(w, 401, "error while parcing token")
 			return
 		}
