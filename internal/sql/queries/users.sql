@@ -7,3 +7,7 @@ RETURNING *;
 SELECT * FROM users
 WHERE nick_name=$1 AND password_hash=$2
 LIMIT 1;
+
+-- name: GetUserById :one
+SELECT * FROM users
+WHERE id=$1;

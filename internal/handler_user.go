@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/google/uuid"
 	"github.com/sanokkk/go_auth/internal/config"
@@ -84,14 +83,6 @@ func (apiCfg *ApiConfig) handleLogin(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//TODO: fix this
-func handleWelcome(w http.ResponseWriter, r *http.Request) {
-	tokenWithBearer := r.Header.Get("Authorization")
-	if tokenWithBearer == "" {
-		respondWithError(w, 401, "no token")
-	}
-	claims := &utils.Claims{}
-	arr := strings.Split(tokenWithBearer, " ")
-	token := arr[1]
-	jwt
+func (apiCfg *ApiConfig) handleWelcome(w http.ResponseWriter, r *http.Request, user repo.User) {
+	respondWithJSON(w, 200, user)
 }

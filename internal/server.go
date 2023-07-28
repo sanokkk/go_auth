@@ -48,6 +48,7 @@ func Serve() {
 	router1 := chi.NewRouter()
 	router1.Post("/register", apiCfg.handlreCreateUser)
 	router1.Post("/login", apiCfg.handleLogin)
+	router1.Get("/welcome", apiCfg.handleAuth(apiCfg.handleWelcome))
 
 	router.Mount("/auth", router1)
 
