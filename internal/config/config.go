@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"log"
 	"os"
 	"strconv"
@@ -30,4 +31,16 @@ func GetConfig() *Config {
 		PORT:  port,
 		DbURL: dbUrl,
 	}
+}
+
+func GetKey() (string, error) {
+	if err := env.Load(); err != nil {
+		log.Fatal("error while loading env info")
+	}
+	key := os.Getenv("SECURITY_KEY")
+	if key == "" {
+		return "", errors.New("can't get security key from .env file")
+	}
+	return key, nil
+
 }

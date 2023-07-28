@@ -10,3 +10,4 @@ CREATE TABLE users (
 
 -- +goose Down
 CREATE TABLE users;
+

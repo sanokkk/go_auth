@@ -16,7 +16,7 @@ func validMail(email string) (bool, string) {
 }
 
 func validFullName(fullname string) (bool, string) {
-	pattern := "/[A-ZА-Я][a-zа-я]{2,30} [A-ZА-Я][a-zа-я]{1,30} [A-ZА-Я][a-zа-я]{2,30}"
+	pattern := "[A-ZА-Я][a-zа-я]{2,30} [A-ZА-Я][a-zа-я]{1,30} [A-ZА-Я][a-zа-я]{2,30}"
 	res, err := regexp.MatchString(pattern, fullname)
 	if err != nil {
 		return false, "FullName is incorrect"
