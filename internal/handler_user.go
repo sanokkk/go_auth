@@ -103,7 +103,6 @@ func (apiCfg *ApiConfig) handleWelcome(w http.ResponseWriter, r *http.Request, u
 	respondWithJSON(w, 200, user)
 }
 
-//TODO: ADD REAUTH FUNCTION
 func (apiCfg *ApiConfig) handleReauth(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		RefreshToken string `json:"refresh_token"`
