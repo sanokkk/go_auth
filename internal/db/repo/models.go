@@ -5,12 +5,14 @@
 package repo
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 )
 
 type Token struct {
 	ID           int32
-	JwtToken     string
+	ExpiresAt    time.Time
 	RefreshToken string
 }
 

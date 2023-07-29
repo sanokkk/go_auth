@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/sanokkk/go_auth/internal/config"
@@ -54,13 +55,13 @@ func (apiCfg *ApiConfig) handlreCreateUser(w http.ResponseWriter, r *http.Reques
 func (apiCfg *ApiConfig) handleLogin(w http.ResponseWriter, r *http.Request) {
 	params := models.UserLogin{}
 	if err := json.NewDecoder(r.Body).Decode(&params); err != nil {
-		log.Fatal("error while getting login model from request: ", err.Error())
+		log.Println("error while getting login model from request: ", err.Error())
 		respondWithError(w, 500, err.Error())
 		return
 	}
 	secretKeyStr, err := config.GetKey()
 	if err != nil {
-		log.Fatal("error while getting security key: ", err.Error())
+		log.Println("error while getting security key: ", err.Error())
 		respondWithError(w, 500, err.Error())
 		return
 	}
@@ -70,7 +71,7 @@ func (apiCfg *ApiConfig) handleLogin(w http.ResponseWriter, r *http.Request) {
 		PasswordHash: HashPassword(Sha256Hash{}, params.Password),
 	})
 	if err != nil {
-		log.Fatal("error while getting user from db: ", err.Error())
+		log.Println("error while getting user from db: ", err.Error())
 		respondWithError(w, 400, err.Error())
 		return
 	}
@@ -79,8 +80,23 @@ func (apiCfg *ApiConfig) handleLogin(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, 400, err.Error())
 		return
 	}
-	respondWithJSON(w, 200, JWTToken)
+	refreshToken, expires, err := utils.GenerateRefresh(&utils.SH256JWT{}, secretKeyStr, models.ConvertToMyUser(&user))
 
+	if err != nil {
+		log.Println("error while creating refreshToken")
+		respondWithError(w, 400, err.Error())
+		return
+	}
+	_, err = apiCfg.DB.CraeateTokens(r.Context(), repo.CraeateTokensParams{
+		ExpiresAt:    expires,
+		RefreshToken: refreshToken,
+	})
+	if err != nil {
+		log.Println("error while adding token to db")
+		respondWithError(w, 400, err.Error())
+		return
+	}
+	respondWithJSON(w, 200, utils.LoginResponse{JWTToken: JWTToken, RefreshToken: refreshToken})
 }
 
 func (apiCfg *ApiConfig) handleWelcome(w http.ResponseWriter, r *http.Request, user repo.User) {
@@ -88,3 +104,41 @@ func (apiCfg *ApiConfig) handleWelcome(w http.ResponseWriter, r *http.Request, u
 }
 
 //TODO: ADD REAUTH FUNCTION
+func (apiCfg *ApiConfig) handleReauth(w http.ResponseWriter, r *http.Request) {
+	type parameters struct {
+		RefreshToken string `json:"refresh_token"`
+	}
+	params := parameters{}
+	if err := json.NewDecoder(r.Body).Decode(&params); err != nil {
+		log.Println("error while getting params from body: ", err.Error())
+		respondWithError(w, 400, err.Error())
+		return
+	}
+	secretKeyStr, err := config.GetKey()
+	if err != nil {
+		log.Println("error while getting security key: ", err.Error())
+		respondWithError(w, 500, err.Error())
+		return
+	}
+	newToken, newRefresh, err := utils.Reauth(params.RefreshToken, secretKeyStr)
+	if err != nil {
+		log.Println("error while getting new tokens: ", err.Error())
+		respondWithError(w, 500, err.Error())
+		return
+	}
+	if err = apiCfg.DB.DeleteToken(r.Context(), params.RefreshToken); err != nil {
+		log.Println("error while removing old token: ", err.Error())
+		respondWithError(w, 500, err.Error())
+		return
+	}
+	if _, err = apiCfg.DB.CraeateTokens(r.Context(), repo.CraeateTokensParams{
+		ExpiresAt:    time.Now().Add(time.Hour * 6),
+		RefreshToken: newRefresh,
+	}); err != nil {
+		log.Println("error while adding new refresh token: ", err.Error())
+		respondWithError(w, 500, err.Error())
+		return
+	}
+	respondWithJSON(w, 200, utils.LoginResponse{JWTToken: newToken, RefreshToken: newRefresh})
+
+}

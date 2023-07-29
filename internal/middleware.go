@@ -36,7 +36,7 @@ func (apiCfg *ApiConfig) handleAuth(handler httpHandler) http.HandlerFunc {
 		})
 		log.Println("token valid: ", token.Valid)
 		if err != nil || !token.Valid {
-			respondWithError(w, 401, "error while parcing token")
+			respondWithError(w, 403, "error while parcing token or token is not valid now")
 			return
 		}
 		user, err := apiCfg.DB.GetUserById(r.Context(), myClaims.Id)

@@ -1,7 +1,7 @@
 -- +goose Up
 CREATE TABLE tokens (
     id SERIAL PRIMARY KEY,
-    jwt_token TEXT UNIQUE NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
     refresh_token TEXT UNIQUE NOT NULL
 );
 

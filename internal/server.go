@@ -49,6 +49,7 @@ func Serve() {
 	router1.Post("/register", apiCfg.handlreCreateUser)
 	router1.Post("/login", apiCfg.handleLogin)
 	router1.Get("/welcome", apiCfg.handleAuth(apiCfg.handleWelcome))
+	router1.Post("/reauth", apiCfg.handleReauth)
 
 	router.Mount("/auth", router1)
 

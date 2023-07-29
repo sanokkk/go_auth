@@ -7,22 +7,33 @@ package repo
 
 import (
 	"context"
+	"time"
 )
 
 const craeateTokens = `-- name: CraeateTokens :one
-INSERT INTO tokens (jwt_token, refresh_token) 
+INSERT INTO tokens (expires_at, refresh_token) 
 VALUES ($1, $2)
-RETURNING id, jwt_token, refresh_token
+RETURNING id, expires_at, refresh_token
 `
 
 type CraeateTokensParams struct {
-	JwtToken     string
+	ExpiresAt    time.Time
 	RefreshToken string
 }
 
 func (q *Queries) CraeateTokens(ctx context.Context, arg CraeateTokensParams) (Token, error) {
-	row := q.db.QueryRowContext(ctx, craeateTokens, arg.JwtToken, arg.RefreshToken)
+	row := q.db.QueryRowContext(ctx, craeateTokens, arg.ExpiresAt, arg.RefreshToken)
 	var i Token
-	err := row.Scan(&i.ID, &i.JwtToken, &i.RefreshToken)
+	err := row.Scan(&i.ID, &i.ExpiresAt, &i.RefreshToken)
 	return i, err
+}
+
+const deleteToken = `-- name: DeleteToken :exec
+DELETE FROM tokens
+WHERE refresh_token=$1
+`
+
+func (q *Queries) DeleteToken(ctx context.Context, refreshToken string) error {
+	_, err := q.db.ExecContext(ctx, deleteToken, refreshToken)
+	return err
 }
