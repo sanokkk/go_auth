@@ -2,7 +2,7 @@
 ### Using SHA256 hashing for passwords and JWT-based authorization, Postgres database with Goose and SQLC
 ### Endpoints with parameters:
 1. "auth/register":
-+Parameters:
+*Parameters:
   {
     "full_name":        "string",
     "e_mail":           "string",
@@ -11,7 +11,7 @@
     "password":         "string",
     "password_confirm": "string",
   }
-+Responses: 201 (Creeated) / 400 (Bad request)
+*Responses: 201 (Creeated) / 400 (Bad request)
 1. "auth/login":
 *Parameters:
   {
