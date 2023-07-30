@@ -12,22 +12,22 @@
     "password_confirm": "string",
   }
 +Responses: 201 (Creeated) / 400 (Bad request)
-2. "auth/login":
-⋅⋅*Parameters:
+1. "auth/login":
+*Parameters:
   {
     "nick_name":        "string",
     "password":         "string",
   }
-⋅⋅*Responses: 200 (Creeated) / 401 (Unauthorized) / 403 (Forbidden)
-⋅⋅*Returns:
+*Responses: 200 (Creeated) / 401 (Unauthorized) / 403 (Forbidden)
+*Returns:
   {
      "jwt_token":     "string"
      "refresh_token": "string"
   }
-3. "auth/welcome":
-   ⋅⋅*Parameters: Header-Authorization "Bearer {token}"
-   ⋅⋅*Responses: 200 (Creeated) / 400 (Bad request) / 500 (Internal)
-   ⋅⋅*Returns:
+1. "auth/welcome":
+   *Parameters: Header-Authorization "Bearer {token}"
+   *Responses: 200 (Creeated) / 400 (Bad request) / 500 (Internal)
+   *Returns:
   {
    "id":                     "string"
    "full_name":              "string",
@@ -36,22 +36,15 @@
     "age":                   "integer",
     "password_hash":         "string",
 }
-4. "auth/reauth"
-   ⋅⋅*Parameters:
+1. "auth/reauth"
+   *Parameters:
   {
     "refresh_token": "string"
   }
-   ⋅⋅*Responses: 200 (Creeated) / 400 (Bad request) / 500 (Internal)
-   ⋅⋅*Returns:
+   *Responses: 200 (Creeated) / 400 (Bad request) / 500 (Internal)
+   *Returns:
   {
      "jwt_token":     "string"
      "refresh_token": "string"
   }
-1. Ordered One
-   * Unordered First
-   * Unordered Second
-   * Unordered Third
-1. Ordered Second
-   * Unordered One
-   * Unordered Two
-   * Unordered Three
+
