@@ -1,5 +1,5 @@
 # Identity-Server на Golang
-### Using SHA256 hashing for passwords and JWT-based authorization 
+### Using SHA256 hashing for passwords and JWT-based authorization, Postgres database
 ### Endpoints with parameters:
 1. "auth/register":
 ⋅*Parameters:
