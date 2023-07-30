@@ -2,7 +2,7 @@
 ### Using SHA256 hashing for passwords and JWT-based authorization, Postgres database with Goose and SQLC
 ### Endpoints with parameters:
 1. "auth/register":
-*Parameters:
+⋅⋅*Parameters:
   {
     "full_name":        "string",
     "e_mail":           "string",
@@ -11,23 +11,23 @@
     "password":         "string",
     "password_confirm": "string",
   }
- *Responses: 201 (Creeated) / 400 (Bad request)
+ ⋅⋅*Responses: 201 (Creeated) / 400 (Bad request)
 2. "auth/login":
-*Parameters:
+⋅⋅*Parameters:
   {
     "nick_name":        "string",
     "password":         "string",
   }
-*Responses: 200 (Creeated) / 401 (Unauthorized) / 403 (Forbidden)
-*Returns:
+⋅⋅*Responses: 200 (Creeated) / 401 (Unauthorized) / 403 (Forbidden)
+⋅⋅*Returns:
   {
      "jwt_token":     "string"
      "refresh_token": "string"
   }
 3. "auth/welcome":
-   *Parameters: Header-Authorization "Bearer {token}"
-   *Responses: 200 (Creeated) / 400 (Bad request) / 500 (Internal)
-   *Returns:
+   ⋅⋅*Parameters: Header-Authorization "Bearer {token}"
+   ⋅⋅*Responses: 200 (Creeated) / 400 (Bad request) / 500 (Internal)
+   ⋅⋅*Returns:
   {
    "id":                     "string"
    "full_name":              "string",
@@ -37,12 +37,12 @@
     "password_hash":         "string",
 }
 4. "auth/reauth"
-   *Parameters:
+   ⋅⋅*Parameters:
   {
     "refresh_token": "string"
   }
-   *Responses: 200 (Creeated) / 400 (Bad request) / 500 (Internal)
-   *Returns:
+   ⋅⋅*Responses: 200 (Creeated) / 400 (Bad request) / 500 (Internal)
+   ⋅⋅*Returns:
   {
      "jwt_token":     "string"
      "refresh_token": "string"
